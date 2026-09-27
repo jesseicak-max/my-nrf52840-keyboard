@@ -1,4 +1,31 @@
 ---
 include:
   - board: nice_nano_v2
-    shield: my_test_kb
+    cmake-args: >
+      -DCONFIG_ZMK_KEYBOARD=y
+      -DCONFIG_ZMK_KSCAN_MATRIX=y
+      -DCONFIG_ZMK_BLE=y
+      -DCONFIG_ZMK_BLE_KEYBOARD_OUTPUT=y
+      -DCONFIG_ZMK_USB=y
+    snippet: |
+      / {
+          chosen {
+              zmk,kscan = &kscan0;
+          };
+          keymap {
+              compatible = "zmk,keymap";
+              default_layer {
+                  bindings =
+                      <&kp A>  <&kp B>
+                      <&kp C>  <&kp D>;
+              };
+          };
+      };
+
+      &kscan0 {
+          compatible = "zmk,kscan-matrix";
+          row-gpios = <&gpio0 6 GPIO_ACTIVE_HIGH>,
+                      <&gpio0 7 GPIO_ACTIVE_HIGH>;
+          col-gpios = <&gpio0 8 GPIO_ACTIVE_HIGH>,
+                      <&gpio0 9 GPIO_ACTIVE_HIGH>;
+      };
